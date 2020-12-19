@@ -1,52 +1,26 @@
 @extends('includes.layout')
 
 @section('navbar')
-@include('navbar', ['user' => Auth::user()])
+@include('includes.navbar', ['user' => Auth::user()])
 @endsection
 
 @section('cabecalho')
-Algumas pessoas que precisam de você!
+Bem vindo! </br>
+<h3>Selecionamos algumas pessoas que precisam de auxílio próximas de você.</h3>
 @endsection
 
 @section('conteudo')
 
-@include('mensagem', ['mensagem' => $mensagem])
+@include('includes.mensagem', ['mensagem' => $mensagem])
 
-@include('errors', ['errors' => $errors])
+@include('includes.errors', ['errors' => $errors])
 
-<div class="lista">
-    @foreach($necessidades as $necessidade)
-
-    <div class="bloco">
-        <div class="linha">
-            <a href="/necessidades/consultar/{{ $necessidade->id }}">
-                Ver detalhes
-            </a>
-        </div>
-
-        <div class="linha">
-            <p>Categoria</p>
-            <p>{{ $necessidade->categoria }}</p>
-        </div>
-
-        <div class="linha">
-            <p>Descrição</p>
-            <p>{{ $necessidade->descricao }}</p>
-        </div>
-
-        <div class="linha">
-            <p>Bairro</p>
-            <p>{{ $necessidade->bairro }}</p>
-        </div>
-
-        <div class="linha">
-            <p>Cidade</p>
-            <p>{{ $necessidade->cidade }}</p>
+<section class="pb-5">
+    <div class="container">
+        <div class="row d-flex">
+            @include('includes.card_necessidade', ['necessidades' => $necessidades, 'login' => true])
         </div>
     </div>
-
-    <br />
-    @endforeach
-</div>
+</section>
 
 @endsection

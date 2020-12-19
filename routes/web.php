@@ -1,11 +1,14 @@
 <?php
 
 use App\Http\Controllers\ApoiadorController;
+use App\Http\Controllers\AtendimentoController;
 use App\Http\Controllers\BeneficiarioController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\NecessidadeController;
 use App\Http\Controllers\UserController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,10 +20,11 @@ use Illuminate\Support\Facades\Route;
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
+    
 */
 
-Route::get('/', [IndexController::class, 'index'])
-    ->name('index');
+Route::get('/', [IndexController::class, 'index'])->name('index');
+
 
 Route::get('/noticias', [IndexController::class, 'noticias']);
 
@@ -36,9 +40,9 @@ Route::post('/registrar/{opcao}', [UserController::class, 'registrar']);
 
 
 
-Route::get('/login', [LoginController::class, 'login']);
+Route::get('/login/{opcao}', [LoginController::class, 'login']);
 
-Route::post('/login', [LoginController::class, 'autenticar']);
+Route::post('/login/{opcao}', [LoginController::class, 'autenticar']);
 
 Route::get('/logout', [LoginController::class, 'logout']);
 
@@ -96,10 +100,28 @@ Route::post('/necessidades/alterar/{id}', [NecessidadeController::class, 'atuali
 
 Route::delete('/necessidades/excluir/{id}', [NecessidadeController::class, 'excluir']);
 
-Route::get('/necessidades/listar', [NecessidadeController::class, 'listar']);
+Route::get('/necessidades/listar', [NecessidadeController::class, 'listarNecessidadesDoBeneficiario']);
 
 Route::get('/necessidades/consultar', [NecessidadeController::class, 'consultar']);
 
-Route::get('/necessidades/buscar-necessidades', [NecessidadeController::class, 'buscarNecessidades']);
+Route::get('/necessidades/pesquisar-necessidades', [NecessidadeController::class, 'pesquisarNecessidades']);
 
 Route::get('/necessidades/consultar/{id}', [NecessidadeController::class, 'detalhes']);
+
+
+
+Route::post('/atendimentos/iniciar/{idNecessidade}', [AtendimentoController::class, 'atender']);
+
+Route::get('/atendimentos/listar', [AtendimentoController::class, 'listar']);
+
+Route::get('/atendimentos/listar/beneficiario', [AtendimentoController::class, 'listarDoBeneficiario']);
+
+Route::get('/atendimentos/consultar/{id}', [AtendimentoController::class, 'consultar']);
+
+Route::get('/atendimentos/consultar/beneficiario/{id}', [AtendimentoController::class, 'consultarDoBeneficiario']);
+
+Route::get('/atendimentos/finalizar/{id}', [AtendimentoController::class, 'descreverFinalizacao']);
+
+Route::post('/atendimentos/finalizar/{id}', [AtendimentoController::class, 'finalizar']);
+
+Route::delete('/atendimentos/cancelar/{id}', [ AtendimentoController::class, 'cancelar']);
